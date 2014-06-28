@@ -27,12 +27,11 @@ eval q{use Scalar::Util 'weaken'; 1}
   || eval q{sub weaken { $_[0] = undef }; 1 }
     || die "Oops, error making a weaken() fallback: $@";
 
-use vars '@ISA', '$VERSION';
-$VERSION = 1;
+our $VERSION = 2;
 
 # singleton here results in a separate instance object in each derived subclass
 use Class::Singleton;
-@ISA = ('Class::Singleton');
+our @ISA = ('Class::Singleton');
 *_new_instance = __PACKAGE__->can('new');
 
 
@@ -126,7 +125,7 @@ sub anum_to_line {
                                 { xfrm => sub {
                                     my ($line) = @_;
                                     ### $line
-                                    my ($got_anum) = $self->line_split($line)
+                                    my ($got_anum) = $self->line_to_anum($line)
                                       or return '';
                                     ### $got_anum
                                     return $got_anum;

@@ -20,11 +20,10 @@ use 5.006;
 use strict;
 use Carp 'croak';
 
-use vars '@ISA','$VERSION';
-$VERSION = 1;
-
 use Math::OEIS::SortedFile;
-@ISA = ('Math::OEIS::SortedFile');
+our @ISA = ('Math::OEIS::SortedFile');
+
+our $VERSION = 2;
 
 use constant base_filename => 'stripped';
 

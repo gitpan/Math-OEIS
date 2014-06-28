@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Copyright 2012, 2013, 2014 Kevin Ryde
+# Copyright 2014 Kevin Ryde
 
 # This file is part of Math-OEIS.
 #
@@ -19,13 +19,13 @@
 
 use 5.006;
 use strict;
-use Test::More tests => 8;
+use Test::More tests => 6;
 
 use lib 't';
 use MyTestHelpers;
 BEGIN { MyTestHelpers::nowarnings(); }
 
-use Math::OEIS::Grep;
+use Math::OEIS::Stripped;
 
 
 #------------------------------------------------------------------------------
@@ -33,44 +33,30 @@ use Math::OEIS::Grep;
 
 {
   my $want_version = 2;
-  is ($Math::OEIS::Grep::VERSION, $want_version,
+  is ($Math::OEIS::Stripped::VERSION, $want_version,
       'VERSION variable');
-  is (Math::OEIS::Grep->VERSION,  $want_version,
+  is (Math::OEIS::Stripped->VERSION,  $want_version,
       'VERSION class method');
 
-  is (eval { Math::OEIS::Grep->VERSION($want_version); 1 },
+  is (eval { Math::OEIS::Stripped->VERSION($want_version); 1 },
       1,
       "VERSION class check $want_version");
   my $check_version = $want_version + 1000;
-  is (! eval { Math::OEIS::Grep->VERSION($check_version); 1 },
+  is (! eval { Math::OEIS::Stripped->VERSION($check_version); 1 },
       1,
       "VERSION class check $check_version");
 }
 
-
 #------------------------------------------------------------------------------
+# sample file reading
+
 {
-  my $filename = 'tempfile.tmp';
-  open my $fh, '+>', $filename or die $!;
-  my $extra = '';
-  print $fh ('x' x 65536) or die $!;
-  seek $fh, 0, 0 or die $!;
-  { my $block = Math::OEIS::Grep::_read_block_lines($fh,$extra);
-    is (length($block), 65536); }
-  { my $block = Math::OEIS::Grep::_read_block_lines($fh,$extra);
-    ok (! defined $block);
-  }
+  my $stripped = Math::OEIS::Stripped->new (filename => 't/test-stripped');
+  my $values_str = $stripped->anum_to_values_str('A000001');
+  ok ($values_str, '1,2,3,4,5');
 
-  print $fh 'x' or die $!;
-  seek $fh, 0, 0 or die $!;
-  { my $block = Math::OEIS::Grep::_read_block_lines($fh,$extra);
-    is (length($block), 65537); }
-  { my $block = Math::OEIS::Grep::_read_block_lines($fh,$extra);
-    ok (! defined $block);
-  }
-
-  close $fh;
-  unlink $filename;
+  my @values = $stripped->anum_to_values('A000002');
+  ok (join(':',@values), '6:7:8:9:10');
 }
 
 #------------------------------------------------------------------------------

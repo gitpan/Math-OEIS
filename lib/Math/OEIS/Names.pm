@@ -20,19 +20,15 @@ use 5.006;
 use strict;
 use Carp 'croak';
 
-use vars '@ISA','$VERSION';
-$VERSION = 1;
-
 use Math::OEIS::SortedFile;
-@ISA = ('Math::OEIS::SortedFile');
+our @ISA = ('Math::OEIS::SortedFile');
 
-use vars '$VERSION';
-$VERSION = 1;
+our $VERSION = 2;
 
 use constant base_filename => 'names';
 
-# C<($anum,$name) = Math::OEIS::Names-E<gt>line_split($line)>
-# Split a line from the names file into A-number and name.
+# C<($anum,$str) = Math::OEIS::Names-E<gt>line_split($line)>
+# Split a line from the names or stripped file into A-number and text.
 sub line_split {
   my ($self, $line) = @_;
   ### Names line_split(): $line

@@ -19,8 +19,12 @@ MANIFEST.SKIP
 SIGNATURE
 t/Grep.t
 t/MyTestHelpers.pm
+t/Names.t
 t/OEIS.t
 t/SortedFile.t
+t/Stripped.t
+t/test-names
+t/test-stripped
 xt/0-Test-CheckChanges.t
 xt/0-Test-ConsistentVersion.t
 xt/0-Test-DistManifest.t

@@ -22,8 +22,7 @@ use Carp 'croak';
 use Math::OEIS::Names;
 use Math::OEIS::Stripped;
 
-use vars '$VERSION';
-$VERSION = 1;
+our $VERSION = 2;
 
 # uncomment this to run the ### lines
 # use Smart::Comments;

@@ -16,5 +16,8 @@ You should have received a copy of the GNU General Public License along
 with Math-OEIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
+Version 2, June 2014
+    - fix for Stripped anum_to_values()
+
 Version 1, June 2014
     - the first version
