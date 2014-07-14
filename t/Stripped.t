@@ -32,7 +32,7 @@ use Math::OEIS::Stripped;
 # VERSION
 
 {
-  my $want_version = 2;
+  my $want_version = 3;
   is ($Math::OEIS::Stripped::VERSION, $want_version,
       'VERSION variable');
   is (Math::OEIS::Stripped->VERSION,  $want_version,

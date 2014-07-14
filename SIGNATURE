@@ -14,32 +14,32 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 ab3a39d9257c71f34897f4ddd3b16de7fd7e5a08 Changes
+SHA1 3386d9b389ddbf72b593547c1d1f4cd6523e5dca Changes
 SHA1 2c09a648059235b09a4f6b04ad4250f33c6a5383 MANIFEST
 SHA1 d73f6910c2283dca6aa23a5d820950745dcb76f6 MANIFEST.SKIP
-SHA1 ad258afabd430d020a1377b19329d7e1557bfa94 META.json
-SHA1 c70e8246c536a6e297b65134f9941a48561bb3aa META.yml
+SHA1 9c292700414a4430b62e76d85c1964a25a7b64fe META.json
+SHA1 6bee2cad8f476934790f59f556dc1087a076bdfa META.yml
 SHA1 36f4594d7a0a3ad8f955daaabc8e5d36bdd41b84 Makefile.PL
-SHA1 71df87ed638021b448d9f10ce00003de37bb315a debian/changelog
+SHA1 ce02a4071c311223e795d08560e594262e87ead1 debian/changelog
 SHA1 ac3478d69a3c81fa62e60f5c3696165a4e5e6ac4 debian/compat
 SHA1 e7c62b2dcedad800cb18daccaefe2654340f3eff debian/control
 SHA1 162331414ce4e8b6903b91178790676d9eb170ce debian/copyright
 SHA1 abae3d1fb5e29b9303b99b4ad5ce1cfff3d178ba debian/rules
 SHA1 61652cd1568dcf2614df833eba241755eee34e89 debian/source/format
 SHA1 56bff9e42ee2c57b5ed3d48eecd090b4d3f00ab2 debian/watch
-SHA1 b5b349f2e7925abd163fe2fc128f25abd6989fe3 devel/grep.pl
+SHA1 af2daae2f430e4ef99964b12a0759ed8286f360a devel/grep.pl
 SHA1 7cc6506201e7b0e2cef5176ab0bb574a7c007d21 devel/speed.pl
-SHA1 82a7a01f0ead958acee58ceb654c22133589dc02 lib/Math/OEIS.pm
-SHA1 31d33eb002eaf106fe5eb63c442b9f105b85fffa lib/Math/OEIS/Grep.pm
-SHA1 90d51b3ded7a5637c4d6f0e08a82f6331b5a870b lib/Math/OEIS/Names.pm
-SHA1 1c088b4a6b5600d1c498d7655f4e906126c6d1dc lib/Math/OEIS/SortedFile.pm
-SHA1 21d3e8ff8d0354bf1461fa66692623b007604b7e lib/Math/OEIS/Stripped.pm
-SHA1 eeae9610ed68e6b9ec3c2b6b7b5a63b4341e9057 t/Grep.t
+SHA1 b411ea2d7b49f5a834a3ef38cf017ebf66749b57 lib/Math/OEIS.pm
+SHA1 07898e545b244b26bc5c77458cc2d94f6ace6661 lib/Math/OEIS/Grep.pm
+SHA1 f121836767cf5a416b75a2d0f53b9d16e240c3eb lib/Math/OEIS/Names.pm
+SHA1 aa541a34597a9eab57b4f48da171bdbc94916edd lib/Math/OEIS/SortedFile.pm
+SHA1 5ba1526b6f48ed2b7c81fe8e1deb778324515c4c lib/Math/OEIS/Stripped.pm
+SHA1 3bd4150b0bf53e5f5ab0f1480ac8e9fd6d698b87 t/Grep.t
 SHA1 3855de075da37f5bc4e6a5534b2f00cc14872a98 t/MyTestHelpers.pm
-SHA1 0fdd609b7b71c1bf872ad4fff82a03c717e22935 t/Names.t
-SHA1 82840a9fec7a132b9fff07b5c105d6aa11125c34 t/OEIS.t
-SHA1 314baba7976b7bddcf2dd7fa4b1ff81c77447e1a t/SortedFile.t
-SHA1 cb7232b8ab4fd4c9d0d644c14fcfe18d0f109456 t/Stripped.t
+SHA1 bed823f38dd1a0f90d8a9d5af2fc2cf5594a378b t/Names.t
+SHA1 b6abd0d3df923389c70ac6c9a8b824815f113244 t/OEIS.t
+SHA1 780f5e1748b1156c910a16be62ba467de2a8eff9 t/SortedFile.t
+SHA1 cc8e0e13f7d6ff93dfb5ea56e4676cc8bcf5b5ea t/Stripped.t
 SHA1 e3919283466cd487fbe53ca8aa2468f1d9678b5f t/test-names
 SHA1 405b75ad3db5efb5a8247c381b94032dbcc0e1ac t/test-stripped
 SHA1 45ff0026ecf34681dd6d1769f64788b39a2353c7 xt/0-Test-CheckChanges.t
@@ -48,7 +48,7 @@ SHA1 d9e7f38a8dcfdb76c56951e4214be8eeda2e2289 xt/0-Test-DistManifest.t
 SHA1 9496e4a2a2734c7093ab6961900dd7a55800976e xt/0-Test-Pod.t
 SHA1 083242d959c1a9242c874982e4585872a95bec93 xt/0-Test-Synopsis.t
 SHA1 63abbc3297914cd38081e95588fd794f9d1f0306 xt/0-Test-YAML-Meta.t
-SHA1 f1c935ab99ee8cc82296292139a6e556c494826b xtools/my-check-copyright-years.sh
+SHA1 aefbab9122821dc90c1ba9ce34f3aa6b393d984c xtools/my-check-copyright-years.sh
 SHA1 b12199bcc70c569ff43f8d8e2ea1c896f587c62f xtools/my-check-spelling.sh
 SHA1 fa07c8e559adbd1af5ba613e021991b0819fc7ba xtools/my-deb.sh
 SHA1 2db0a23176de55a8ee8f1643f239aeaa2bcf4fa1 xtools/my-diff-prev.sh
@@ -59,7 +59,7 @@ SHA1 f90084e1d6f95abb12eea896cd1cc850402d7726 xtools/my-wunused.sh
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iD8DBQFTrpBCLFMCIV9q3ToRAnVwAJ4n0o8XuAot6J6Uq+RruKfiPfZSzQCgh4Vr
-jAxiDFVUOkDlfVXXFq9oUdc=
-=mEes
+iD8DBQFTw7F+LFMCIV9q3ToRAhgeAKC2JitZJJ0idsqAMne535I0nw/v8ACeLTsE
+FZN3qoqwYjRJKUYzc4VVMqg=
+=ifak
 -----END PGP SIGNATURE-----

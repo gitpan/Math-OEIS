@@ -16,6 +16,10 @@ You should have received a copy of the GNU General Public License along
 with Math-OEIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
+Version 3, July 2014
+    - Grep fix for "name" parameter usage,
+      better handling of bignums in halving/doubling attempts
+
 Version 2, June 2014
     - fix for Stripped anum_to_values()
 

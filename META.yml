@@ -34,4 +34,4 @@ requires:
 resources:
   homepage: http://user42.tuxfamily.org/math-oeis/index.html
   license: http://www.gnu.org/licenses/gpl.html
-version: '2'
+version: '3'

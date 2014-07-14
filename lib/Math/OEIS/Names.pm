@@ -23,7 +23,7 @@ use Carp 'croak';
 use Math::OEIS::SortedFile;
 our @ISA = ('Math::OEIS::SortedFile');
 
-our $VERSION = 2;
+our $VERSION = 3;
 
 use constant base_filename => 'names';
 

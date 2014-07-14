@@ -22,7 +22,7 @@ use Carp 'croak';
 use Math::OEIS::Names;
 use Math::OEIS::Stripped;
 
-our $VERSION = 2;
+our $VERSION = 3;
 
 # uncomment this to run the ### lines
 # use Smart::Comments;
@@ -125,6 +125,11 @@ sub search {
     }
   }
 
+  if ($h{'verbose'}) {
+    print $name;
+    $name = '';
+  }
+
   my $max_matches = $h{'max_matches'};
   my $count = 0;
 
@@ -156,39 +161,56 @@ sub search {
 
     } elsif ($mung eq 'negate') {
       $mung_desc = "[NEGATED]\n";
-      $array = [ map {abs($_)} @$orig_array ];
+      $array = [ map { my $value = $_;
+                       unless ($value =~ s/^-//) {
+                         $value = "-$value";
+                       }
+                       $value
+                     } @$orig_array ];
 
     } elsif ($mung eq 'half') {
       $mung_desc = "[HALF]\n";
       $array = [ map {
-        if ($_ % 2) {
-          ### not all even to halve ...
+        my $value = _to_bigint($_);
+        if ($value % 2) {
+          if ($h{'verbose'}) {
+            print "not all even, cannot halve\n";
+          }
           next MUNG;
         }
-        $_/2
+        $value/2
       } @$orig_array ];
 
     } elsif ($mung eq 'quarter') {
       $mung_desc = "[QUARTER]\n";
       $array = [ map {
-        if ($_ % 4) {
-          ### not all multiple of 4 to quarter ...
+        my $value = _to_bigint($_);
+        if ($value % 4) {
+          if ($h{'verbose'}) {
+            print "not all multiple of 4, cannot quarter\n";
+          }
           next MUNG;
         }
-        $_/4
+        $value/4
       } @$orig_array ];
 
     } elsif ($mung eq 'double') {
       $mung_desc = "[DOUBLE]\n";
-      $array = [ map {2*$_} @$orig_array ];
+      $array = [ map {2*_to_bigint($_)} @$orig_array ];
 
     } elsif ($mung eq 'abs') {
       $mung_desc = "[ABSOLUTE VALUES]\n";
       next unless $h{'try_abs'};
+
       my $any_negative = 0;
-      $array = [ map { $any_negative ||= ($_ < 0); abs($_) } @$orig_array ];
+      $array = [ map { my $abs = $_;
+                       $any_negative |= ($abs =~ s/^-//);
+                       $abs
+                     } @$orig_array ];
       if (! $any_negative) {
-        ### no negatives to absolutize ...
+        if ($h{'verbose'}) {
+          print "no negatives to absolutize\n";
+        }
         next;
       }
     }
@@ -263,13 +285,27 @@ sub search {
       my ($anum) = ($line =~ /^(A\d+)/);
       $anum || die "oops, A-number not matched in line: ",$line;
 
+      print $name;
+      $name = '';
+
+      print $mung_desc;
+      $mung_desc = '';
+
       my $anum_name = Math::OEIS::Names->anum_to_name($anum);
       if (! defined $anum_name) { $anum_name = '[unknown name]'; }
-      print $mung_desc; $mung_desc = '';
       print "$anum $anum_name\n";
+
       print "$line\n";
       $count++;
     }
+  }
+  if ($count == 0) {
+    if ($h{'verbose'}) {
+      print "no matches\n";
+    }
+  }
+  if ($count || $h{'verbose'}) {
+    print "\n";
   }
 }
 
@@ -378,6 +414,26 @@ sub _any_nonzero {
   return 0;
 }
 
+{
+  my $bigint_class;
+  my $length_limit = length(~0) - 2;
+  sub _to_bigint {
+    my ($n) = @_;
+    if (length($n) < $length_limit) {
+      return $n;
+    }
+    $bigint_class ||= do {
+      # Crib note: don't change the back-end if already loaded
+      unless (Math::BigInt->can('new')) {
+        require Math::BigInt;
+        eval { Math::BigInt->import (try => 'GMP') };
+      }
+      'Math::BigInt'
+    };
+    return $bigint_class->new($n);
+  }
+}
+
 1;
 __END__
 
@@ -415,8 +471,8 @@ Math::OEIS::Grep - search for numbers in OEIS F<stripped> file
 
 =head1 DESCRIPTION
 
-This module searches a downloaded copy of the OEIS F<stripped> file for
-numbers.
+This module searches for numbers in a downloaded copy of the OEIS
+F<stripped> file.
 
 =over
 
@@ -424,38 +480,41 @@ F<~/OEIS/stripped>
 
 =back
 
-The F<stripped> file is the first few sample values of all OEIS sequences.
-This grep is an alternative to the OEIS web site search and is good if
-offline or for mechanically trying a large numbers of searches.
+F<stripped> is a big file of the first few sample values of all OEIS
+sequences.  This grep is an alternative to the OEIS web site search and is
+good if offline or for mechanically trying a large numbers of searches.
 
 The exact form of the results printout and transformations is not settled.
 The intention is to do something sensible to find given numbers.
 
-The OEIS F<names> file, if available, is used to show the name of a matched
-sequence (see L<Math::OEIS::Names>).
+The OEIS F<names> file is used to show the name of a matched sequence, if
+that file is available.  (See L<Math::OEIS::Names>.)
 
 =head2 Details
 
-A long array of values which might goes past the OEIS samples is still
-matched.  This works by demanding a match of the first few array values but
-then stopping when either the end of the array or the end of the samples,
-whichever comes first.
+More values than in the OEIS samples will still match.  This works by
+demanding a match of the first few given values but then stopping at either
+the end of the array or the end of the samples, whichever comes first.
 
 An array of constant values or small constant difference is recognised and
 not searched, since there's usually too many matches and the OEIS sequence
 which is a constant or constant difference may not be the first match.
 
-C<File::Map> is used to mmap the F<stripped> file into core for searching,
-if that module is available.  This is recommended since mmap is a speedup of
-about 2x over the fallback plain reading (by blocks).
+C<File::Map> is used to access the F<stripped> file for searching, if that
+module is available.  This is recommended since mmap is a speedup of about
+2x over the fallback plain reading by blocks.
 
-=cut
+The hints given in the OEIS L<http://oeis.org/hints.html> for web searches
+apply also to the grep here, namely that it can be worth skipping an initial
+value or two in case you have some slightly different start but then a known
+sequence.  Perhaps that could be attempted automatically here, if no full
+match.
 
-# As noted in the OEIS web search hints it can be worth skipping an initial
-# couple of values because an OEIS sequence might begin with one or two fewer
-# values than your idea of a sequence.
-
-=pod
+Also divide out a small common factor.  There's attempts here to automate
+that here a little by searching for /2 and /4 if no exact match (and
+doubling *2 also in fact).  Maybe more divisions could be attempted, even a
+full GCD.  In practice sequences with common factors are often present when
+it arises from the sequence definition.
 
 =head1 FUNCTIONS
 
@@ -490,6 +549,7 @@ The module C<import> accepts a C<-search> option which is designed for use
 from the command line
 
     perl -MMath::OEIS::Grep=-search,123,456,789
+    # search and then exit perl
 
 =head1 SEE ALSO
 

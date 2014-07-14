@@ -21,6 +21,33 @@ use 5.006;
 use strict;
 
 {
+  # grep with names
+
+  require Math::OEIS::Grep;
+  Math::OEIS::Grep->search(name => 'name one',
+                           array=>['70760']);
+  Math::OEIS::Grep->search(name => 'name two',
+                           array=>['-70769800810139187843']);
+  Math::OEIS::Grep->search(name => 'name two',
+                           array=>[42894032],
+                           verbose => 1);
+  exit 0;
+}
+
+{
+  require Math::OEIS::Grep;
+  Math::OEIS::Grep->search(array=>['70760'],
+                           use_mmap => 0);
+  Math::OEIS::Grep->search(array=>['70769800810139187843'],
+                           use_mmap => 0);
+  Math::OEIS::Grep->search(array=>[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,1],
+                           use_mmap => 0);
+  exit 0;
+}
+
+{
+  # average line length in the "stripped" file
+
   require Math::OEIS::Stripped;
   my $fh = Math::OEIS::Stripped->fh;
   my $len = 0;
@@ -39,17 +66,6 @@ use strict;
   }
   my $average = $total/$count;
   print "max len $len in $anum average $average of $count\n";
-  exit 0;
-}
-
-{
-  require Math::OEIS::Grep;
-  Math::OEIS::Grep->search(array=>['70760'],
-                           use_mmap => 0);
-  Math::OEIS::Grep->search(array=>['70769800810139187843'],
-                           use_mmap => 0);
-  Math::OEIS::Grep->search(array=>[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,2,1],
-                           use_mmap => 0);
   exit 0;
 }
 

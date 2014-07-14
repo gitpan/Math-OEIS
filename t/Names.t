@@ -32,7 +32,7 @@ use Math::OEIS::Names;
 # VERSION
 
 {
-  my $want_version = 2;
+  my $want_version = 3;
   is ($Math::OEIS::Names::VERSION, $want_version,
       'VERSION variable');
   is (Math::OEIS::Names->VERSION,  $want_version,
