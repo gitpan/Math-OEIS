@@ -23,7 +23,7 @@ use Carp 'croak';
 use Math::OEIS::SortedFile;
 our @ISA = ('Math::OEIS::SortedFile');
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 use constant base_filename => 'names';
 
@@ -78,27 +78,18 @@ Math::OEIS::Names - read the OEIS F<names> file
 
 =head1 DESCRIPTION
 
-This is an interface to the OEIS F<names> file
+This is an interface to the OEIS F<names> file.  It should be downloaded and
+unzipped to F<~/OEIS/names>,
 
-=over
+    cd ~/OEIS
+    wget http://oeis.org/names.gz
+    gunzip names.gz
 
-F<~/OEIS/names>
+F<names> is a very large file listing each A-number and the sequence name.
+The name is a single line description, perhaps a slightly long line.
 
-=back
-
-downloaded and gunzipped from
-
-=over
-
-L<http://oeis.org/names.gz>
-
-=back
-
-The F<names> file lists each A-number and its name.  The name is a single
-line description, perhaps a slightly long line.
-
-The F<names> file is sorted by A-number so the C<anum_to_name()> lookup is a
-text file binary search (currently implemented with L<Search::Dict>).
+The F<names> file is sorted by A-number so C<anum_to_name()> is a text file
+binary search (currently implemented with L<Search::Dict>).
 
 =head1 FUNCTIONS
 

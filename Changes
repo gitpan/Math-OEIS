@@ -16,6 +16,12 @@ You should have received a copy of the GNU General Public License along
 with Math-OEIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
+
+Version 4, July 2014
+    - Grep better message on no stripped file,
+      stringize bigints as a workaround for Math::BigInt::GMP bug,
+      per Dana Jacobsen RT#97218 and RT#97221
+
 Version 3, July 2014
     - Grep fix for "name" parameter usage,
       better handling of bignums in halving/doubling attempts

@@ -23,7 +23,7 @@ use Carp 'croak';
 use Math::OEIS::SortedFile;
 our @ISA = ('Math::OEIS::SortedFile');
 
-our $VERSION = 3;
+our $VERSION = 4;
 
 use constant base_filename => 'stripped';
 
@@ -136,27 +136,19 @@ Math::OEIS::Stripped - read the OEIS F<stripped> file
 
 =head1 DESCRIPTION
 
-This is an interface to the OEIS F<stripped> file
+This is an interface to the OEIS F<stripped> file.  It should be downloaded
+and unzipped to F<~/OEIS/stripped>,
 
-=over
+    cd ~/OEIS
+    wget http://oeis.org/stripped.gz
+    gunzip stripped.gz
 
-L<http://oeis.org/stripped.gz>
+F<stripped> is a very large file containing each A-number and its sample
+values.  There's usually about 180 characters worth of sample values but may
+be more or less.
 
-=back
-
-downloaded and gunzipped to
-
-=over
-
-F<~/OEIS/stripped>
-
-=back
-
-The F<stripped> file contains each A-number and its sample values.  There's
-usually about 180 characters worth of sample values but may be more or less.
-
-The F<stripped> file is sorted by A-number so the C<anum_to_values()> lookup
-is a text file binary search (currently implemented with L<Search::Dict>).
+The F<stripped> file is sorted by A-number so C<anum_to_values()> is a text
+file binary search (currently implemented with L<Search::Dict>).
 
 =head1 FUNCTIONS
 
@@ -174,11 +166,11 @@ A-number.  Values bigger than a usual Perl integer are automatically
 converted to C<Math::BigInt> so as to preserve exact values.
 
 C<anum_to_values_str()> returns a string like "1,2,3,4", or C<undef> if no
-such A-number.  (The stripped file has a leading comma on its values list
-but this is removed here for convenience of subsequent C<split> or similar.)
+such A-number.  The stripped file has a leading comma on its values list but
+this is removed here for convenience of subsequent C<split> or similar.
 
 Draft sequences may have an empty values list ",,".  The return for them is
-the same as "no such A-number", reckoning they have no values yet.
+the same as "no such A-number" reckoning they have no values yet.
 
 =item C<Math::OEIS::Stripped-E<gt>close()>
 

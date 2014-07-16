@@ -17,13 +17,34 @@
 # You should have received a copy of the GNU General Public License along
 # with Math-PlanePath.  If not, see <http://www.gnu.org/licenses/>.
 
-use 5.006;
+use 5.004;
 use strict;
+use Math::OEIS::Grep;
 
+{
+  system('HOME=/no/such/dir perl -MMath::OEIS::Grep=-search,123,456,789');
+
+  # when no ~/OEIS/stripped file
+  $ENV{'HOME'} = '/no/such/dir';
+  Math::OEIS::Grep->search(array=>[ 123,456,789 ]);
+  exit 0;
+}
+{
+  # dodgy stringizing from Math::BigInt::GMP
+  require Math::BigInt;
+  Math::BigInt->import (try => 'GMP');
+
+  Math::OEIS::Grep->search(array=>[ 13802006746828966928 ]);
+  Math::OEIS::Grep->search(array=>[ '13802006746828966928' ]);
+  exit 0;
+}
+{
+  Math::OEIS::Grep->search(array=>[2,10,34,106,322,970,2914]);
+  exit 0;
+}
 {
   # grep with names
 
-  require Math::OEIS::Grep;
   Math::OEIS::Grep->search(name => 'name one',
                            array=>['70760']);
   Math::OEIS::Grep->search(name => 'name two',
@@ -35,7 +56,6 @@ use strict;
 }
 
 {
-  require Math::OEIS::Grep;
   Math::OEIS::Grep->search(array=>['70760'],
                            use_mmap => 0);
   Math::OEIS::Grep->search(array=>['70769800810139187843'],
