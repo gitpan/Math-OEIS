@@ -23,7 +23,7 @@ use Carp 'croak';
 use Math::OEIS::SortedFile;
 our @ISA = ('Math::OEIS::SortedFile');
 
-our $VERSION = 4;
+our $VERSION = 5;
 
 use constant base_filename => 'names';
 
@@ -78,8 +78,8 @@ Math::OEIS::Names - read the OEIS F<names> file
 
 =head1 DESCRIPTION
 
-This is an interface to the OEIS F<names> file.  It should be downloaded and
-unzipped to F<~/OEIS/names>,
+This is an interface to the OEIS F<names> file.  The file should be
+downloaded and unzipped to F<~/OEIS/names>,
 
     cd ~/OEIS
     wget http://oeis.org/names.gz

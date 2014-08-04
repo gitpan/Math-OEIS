@@ -32,7 +32,7 @@ use Math::OEIS::SortedFile;
 # VERSION
 
 {
-  my $want_version = 4;
+  my $want_version = 5;
   is ($Math::OEIS::SortedFile::VERSION, $want_version,
       'VERSION variable');
   is (Math::OEIS::SortedFile->VERSION,  $want_version,

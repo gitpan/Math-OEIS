@@ -32,7 +32,7 @@ use Math::OEIS::Grep;
 # VERSION
 
 {
-  my $want_version = 4;
+  my $want_version = 5;
   is ($Math::OEIS::Grep::VERSION, $want_version,
       'VERSION variable');
   is (Math::OEIS::Grep->VERSION,  $want_version,

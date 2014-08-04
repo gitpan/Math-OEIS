@@ -20,7 +20,7 @@ use 5.006;
 use strict;
 use File::Spec;
 
-our $VERSION = 4;
+our $VERSION = 5;
 
 sub local_directories {
   # my ($class) = @_;

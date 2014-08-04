@@ -17,6 +17,9 @@ with Math-OEIS.  If not, see <http://www.gnu.org/licenses/>.
 
 
 
+Version 5, August 2014
+    - Grep fix print when match reaches end of stripped line
+
 Version 4, July 2014
     - Grep better message on no stripped file,
       stringize bigints as a workaround for Math::BigInt::GMP bug,

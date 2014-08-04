@@ -22,7 +22,7 @@ use Carp 'croak';
 use Math::OEIS::Names;
 use Math::OEIS::Stripped;
 
-our $VERSION = 4;
+our $VERSION = 5;
 
 # uncomment this to run the ### lines
 # use Smart::Comments;
@@ -105,8 +105,12 @@ sub search {
 
   {
     my $join = $array->[0];
-    for (my $i = 1; $i <= $#$array && length($join) < 50; $i++) {
+    for (my $i = 1; $i <= $#$array; $i++) {
       $join .= ','.$array->[$i];
+      if (length($join) > 50) {
+        $join .= ',...';
+        last;
+      }
     }
     $name .= "match $join\n";
   }
@@ -212,7 +216,13 @@ sub search {
                      } @$orig_array ];
       if (! $any_negative) {
         if ($h{'verbose'}) {
-          print "no negatives to absolutize\n";
+          print "skip absolutize, no negatives\n";
+        }
+        next;
+      }
+      if (_constant_array(@$array)) {
+        if ($h{'verbose'}) {
+          print "skip absolutize, abs values all equal\n";
         }
         next;
       }
@@ -223,6 +233,7 @@ sub search {
 
     if ($use_mmap) {
       pos($stripped_mmap) = 0;
+      ### mmap total length: length($stripped_mmap)
     } else {
       seek $fh, 0, 0
         or croak "Error seeking stripped file: ",$!;
@@ -235,14 +246,23 @@ sub search {
 
         # using regexp only
         $stripped_mmap =~ /$re/g or last SEARCH;
-        my $found_pos = pos($stripped_mmap)-1;
-        my $start = rindex($stripped_mmap,"\n",$found_pos) + 1;
-        my $end = index($stripped_mmap,"\n",$found_pos);
+        my $found_pos = pos($stripped_mmap);
+
+        # $re matches , or \n at end
+        # $found_pos may be after \n of matched line
+        # So for $end look from $found_pos-1 onwards.
+        # For $start look from $found_pos-2 since don't want rindex() to
+        # give the \n which is at $found_pos-1.
+        my $start = rindex($stripped_mmap,"\n",$found_pos-2) + 1;
+        my $end = index($stripped_mmap,"\n",$found_pos-1);
         pos($stripped_mmap) = $end;
         $line = substr($stripped_mmap, $start, $end-$start);
+
         ### $found_pos
+        ### char at found_pos: substr($stripped_mmap,$found_pos,1)
         ### $start
         ### $end
+        ### assert: $end >= $start
 
         # my $pos = 0;
         # using combination index() and regexp
@@ -264,9 +284,10 @@ sub search {
 
         for (;;) {
           if ($block =~ /$re/g) {
-            my $found_pos = pos($block)-1;
-            my $start = rindex($block,"\n",$found_pos) + 1;
-            my $end = index($block,"\n",$found_pos);
+            # same $found_pos logic as the mmap case above
+            my $found_pos = pos($block);
+            my $start = rindex($block,"\n",$found_pos-2) + 1;
+            my $end = index($block,"\n",$found_pos-1);
             pos($block) = $end;
             $line = substr($block, $start, $end-$start);
             last;
@@ -461,39 +482,39 @@ offline or for mechanically trying a large numbers of searches.
 The exact form of the results printout and transformations is not settled.
 The intention is to do something sensible to find given numbers.
 
-The OEIS F<names> file is used to show the name of a matched sequence, if
+The OEIS F<names> file is used to show the name of a matched sequence if
 that file is available.  See L<Math::OEIS::Names>.
 
 =head2 Details
 
 When a match is found it's generally necessary to examine the sequence
-definition manually to check the relevance.  It might be exactly the formula
-you're seeking, or it might be mere coincidence, or it might be an
-interesting unsuspected connection.
+definition manually to check the relevance.  It might be exactly what you're
+seeking, or it might be mere coincidence, or it might be an interesting
+unsuspected connection.
 
-If the given array of values is longer than the OEIS samples it will still
-match.  The first few values must match but then the match stops at either
-the end of the given values or the end of the OEIS samples, whichever comes
-first.
+If the given array of values is longer than the OEIS samples then it still
+matches.  The first few array values must be found but then matching stops
+at either the end of the given values or the end of the OEIS samples,
+whichever comes first.
 
 An array of constant values or small constant difference is recognised and
 not searched since there's usually too many matches and the OEIS sequence
 which is a constant or constant difference may not be the first match.
 
-C<File::Map> is used to access the F<stripped> file for searching, if that
-module is available.  This is recommended since C<mmap> is a speedup of
+C<File::Map> is used to access the F<stripped> file for searching if that
+module is available.  This is recommended since C<mmap()> is a speedup of
 about 2x over plain reading (by blocks).
 
 The OEIS search hints at L<http://oeis.org/hints.html> note that it can be
 worth skipping an initial value or two in case you have a different idea of
-a start, but then a known sequence.  There's a slight attempt to automate
+a start but then a known sequence.  There's a slight attempt to automate
 that here by stripping leading zeros and one initial value if no full match.
 
 It may be worth dividing out a small common factor.  There's attempts here
 to automate that here by searching for /2 and /4 if no exact match (and
 doubling *2 too in fact).  Maybe more divisions could be attempted, even a
 full GCD.  In practice sequences with common factors are often present when
-arises naturally from a sequence definition.
+they arise naturally from a sequence definition.
 
 =head1 FUNCTIONS
 
@@ -530,8 +551,8 @@ from the command line
     perl -MMath::OEIS::Grep=-search,123,456,789
     # search and then exit perl
 
-In Emacs see C<oeis.el> to run such a command on numbers entered or at
-point, L<http://user42.tuxfamily.org/oeis-el/index.html>.
+For Emacs see the author's C<oeis.el> to run this search on numbers entered
+or at point, L<http://user42.tuxfamily.org/oeis-el/index.html>.
 
 =over
 

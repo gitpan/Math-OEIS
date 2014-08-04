@@ -23,7 +23,7 @@ use Carp 'croak';
 use Math::OEIS::SortedFile;
 our @ISA = ('Math::OEIS::SortedFile');
 
-our $VERSION = 4;
+our $VERSION = 5;
 
 use constant base_filename => 'stripped';
 
@@ -136,16 +136,16 @@ Math::OEIS::Stripped - read the OEIS F<stripped> file
 
 =head1 DESCRIPTION
 
-This is an interface to the OEIS F<stripped> file.  It should be downloaded
-and unzipped to F<~/OEIS/stripped>,
+This is an interface to the OEIS F<stripped> file.  The file should be
+downloaded and unzipped to F<~/OEIS/stripped>,
 
     cd ~/OEIS
     wget http://oeis.org/stripped.gz
     gunzip stripped.gz
 
 F<stripped> is a very large file containing each A-number and its sample
-values.  There's usually about 180 characters worth of sample values but may
-be more or less.
+values.  There's usually about 180 characters worth of sample values but
+possibly more or less.
 
 The F<stripped> file is sorted by A-number so C<anum_to_values()> is a text
 file binary search (currently implemented with L<Search::Dict>).
@@ -224,6 +224,8 @@ Close the F<stripped> file handle, if not already closed.
 
 C<Math::OEIS>,
 C<Math::OEIS::Names>
+
+OEIS files page L<http://oeis.org/allfiles.html>
 
 =head1 HOME PAGE
 

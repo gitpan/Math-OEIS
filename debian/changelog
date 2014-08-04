@@ -1,5 +1,5 @@
-libmath-oeis-perl (4-0.1) unstable; urgency=low
+libmath-oeis-perl (5-0.1) unstable; urgency=low
 
   * Packaged version.
 
- -- Kevin Ryde <user42_kevin@yahoo.com.au>  Mon, 14 Jul 2014 20:54:03 +1000
+ -- Kevin Ryde <user42_kevin@yahoo.com.au>  Wed, 16 Jul 2014 20:45:05 +1000
